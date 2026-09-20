@@ -179,7 +179,7 @@ async def settings_query(bot, query):
      buttons.append([InlineKeyboardButton('• ʙᴀᴄᴋ', 
                       callback_data="settings#main")])
      await query.message.edit_text(
-        "<b><u>CUSTOM CAPTION</b></u>\n\n<b>You can set a custom caption to videos and documents. Normaly use its default caption</b>\n\n<b><u>AVAILABLE FILLINGS:</b></u>\n- <code>{filename}</code> : Filename\n- <code>{size}</code> : File size\n- <code>{caption}</code> : default caption\n- <code>{language}</code> : Audio language(s) — MediaInfo / extract.py\n- <code>{subtitle_language}</code> : Subtitle language(s) — MediaInfo / extract.py",
+        "<b><u>CUSTOM CAPTION</b></u>\n\n<b>You can set a custom caption to videos and documents. Normaly use its default caption</b>\n\n<b><u>AVAILABLE FILLINGS:</b></u>\n- <code>{filename}</code> : Filename\n- <code>{size}</code> : File size\n- <code>{caption}</code> : default caption\n- <code>{language}</code> : audio language(s) from MediaInfo\n- <code>{subtitle_language}</code> : subtitle language(s) from MediaInfo",
         reply_markup=InlineKeyboardMarkup(buttons))
                                
   elif type=="seecaption":   
@@ -222,7 +222,7 @@ async def settings_query(bot, query):
             await caption.delete()
             return await text.edit_text(
                f"<b>invalid caption format: <code>{e}</code></b>\n"
-               "<b>Available: {filename}, {size}, {caption}, {language}, {subtitle_language}</b>",
+               "<b>Placeholders: {filename}, {size}, {caption}, {language}, {subtitle_language}.</b>",
                reply_markup=InlineKeyboardMarkup(buttons))
          await update_configs(user_id, 'caption', caption_text)
          await caption.delete()

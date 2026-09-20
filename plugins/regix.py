@@ -9,7 +9,6 @@ import time
 import asyncio 
 import logging
 from .utils import STS
-from .extract import get_track_languages
 from database import db 
 from .test import CLIENT , start_clone_bot
 from config import Config, temp
@@ -28,6 +27,8 @@ TEXT = Translation.TEXT
 #Dont Remove My Credit @Silicon_Bot_Update 
 #This Repo Is By @Silicon_Official 
 # For Any Kind Of Error Ask Us In Support Group @Silicon_Botz 
+
+from plugins.extract import get_track_languages
 
 @Client.on_callback_query(filters.regex(r'^start_public'))
 async def pub_(bot, message):
@@ -276,12 +277,11 @@ async def custom_caption(client, msg, caption):
             fcaption = str(fcaption)
 
         if caption:
-          # Audio/subtitle detection is performed only when the user uses
-          # these placeholders in /settings -> Custom Caption.
-          language = "N/A"
-          subtitle_language = "N/A"
+          # Track extraction is only performed when the custom template asks for it.
           if '{language}' in caption or '{subtitle_language}' in caption:
             language, subtitle_language = await get_track_languages(client, msg)
+          else:
+            language, subtitle_language = 'N/A', 'N/A'
 
           try:
             return caption.format(
@@ -292,7 +292,6 @@ async def custom_caption(client, msg, caption):
                 subtitle_language=subtitle_language
             )
           except (KeyError, IndexError, ValueError):
-            # Do not let a legacy/malformed template stop a forwarding task.
             return fcaption
         return fcaption
   return None
